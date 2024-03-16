@@ -20,9 +20,9 @@ from solution.consumer_sol import mqConsumer  # pylint: disable=import-error
 def main(sector: str, queueName: str) -> None:
     
     # Implement Logic to Create Binding Key from the ticker and sector variable -  Step 2
-    #
-    #                       WRITE CODE HERE!!!
-    #
+    bindingKey = f"*.*.{sector}".strip()
+    
+    print(f"Received {bindingKey}")
     
     consumer = mqConsumer(binding_key=bindingKey,exchange_name="Tech Lab Topic Exchange",queue_name=queueName)    
     consumer.startConsuming()
@@ -32,8 +32,22 @@ def main(sector: str, queueName: str) -> None:
 if __name__ == "__main__":
 
     # Implement Logic to read the sector and queueName string from the command line and save them - Step 1
-    #
-    #                       WRITE CODE HERE!!!
-    #
+    parser = argparse.ArgumentParser(
+        description="Process Stock Sector, And Queue Name."
+    )
 
-    sys.exit(main(sector,queue))
+    parser.add_argument(
+        "-s",
+        "--sector",
+        type=str,
+        help="Stock Sectors",
+        required=True,
+    )
+
+    parser.add_argument(
+        "-q", "--queue", type=str, help="Queue Name", required=True
+    )
+
+    args = parser.parse_args()
+
+    sys.exit(main(args.sector, args.queue))
